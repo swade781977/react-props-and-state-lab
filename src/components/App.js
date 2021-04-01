@@ -15,8 +15,9 @@ class App extends React.Component {
     }
   }
 
-  onChangeFilter = ({tagret: {value} }) => {
-      this.setState({ filters: {...this.state.filters, type: value}})
+  onChangeType = ({target: {value} }) => {
+    console.log('CHANGED')  
+    this.setState({filters: {...this.state.filters, type: value}})
   }
 
   fetchPets = () => {
@@ -31,11 +32,9 @@ class App extends React.Component {
     }));
   };
 
-  onAdoptPet = (petId) => {
+  onAdoptPet = petId => {
     const pets = this.state.pets.map(p => {
-      if(p.id === petId){
-        return {isAdopted: true}
-      }
+      return p.id === petId ? {...p, isAdopted: true} : p;
     })
     this.setState({pets: pets})
   };
@@ -52,7 +51,7 @@ class App extends React.Component {
         <div className="ui container">
           <div className="ui grid">
             <div className="four wide column">
-              <Filters onChange={this.onChangeFilter} onClick={this.fetchPets} />
+              <Filters onChangeType={this.onChangeType} onFindPetsClick={this.fetchPets} />
             </div>
             <div className="twelve wide column">
               <PetBrowser pets={this.state.pets} onAdoptPet={this.onAdoptPet} />
